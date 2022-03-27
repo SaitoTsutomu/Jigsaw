@@ -116,7 +116,7 @@ class CJG_OT_play_puzzle(bpy.types.Operator):
                 obj.location = x, y, z
             for obj in col.objects:
                 df = np.linalg.norm(self.answer[obj.name] - obj.location)
-                if df > 0.04:
+                if df > 0.001:
                     print(obj.name, df)
                     break
             else:
