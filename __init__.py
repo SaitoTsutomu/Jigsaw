@@ -40,8 +40,9 @@ class CJG_OT_make_puzzle(bpy.types.Operator):
             lc = bpy.context.view_layer.layer_collection.children[col_name]
             bpy.context.view_layer.active_layer_collection = lc
             if i == 0:
-                mat = bpy.data.materials.new()
-                mat.name = "frame"
+                if "frame" in bpy.data.materials:
+                    bpy.data.materials.remove(bpy.data.materials["frame"])
+                mat = bpy.data.materials.new(name="frame")
                 mat.use_nodes = True
                 bsdf = mat.node_tree.nodes["Principled BSDF"]
                 bpy.ops.curve.simple(Simple_Type="Rectangle", use_cyclic_u=True)
@@ -51,8 +52,9 @@ class CJG_OT_make_puzzle(bpy.types.Operator):
                 obj.data.fill_mode = "NONE"
                 obj.data.bevel_depth = 0.01
                 obj.lock_location = True, True, True
-        mat = bpy.data.materials.new()
-        mat.name = "image"
+        if "image" in bpy.data.materials:
+            bpy.data.materials.remove(bpy.data.materials["image"])
+        mat = bpy.data.materials.new(name="image")
         mat.use_nodes = True
         bsdf = mat.node_tree.nodes["Principled BSDF"]
         image = mat.node_tree.nodes.new(type="ShaderNodeTexImage")
