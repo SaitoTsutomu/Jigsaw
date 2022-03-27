@@ -35,8 +35,7 @@ class CJG_OT_make_puzzle(bpy.types.Operator):
         for i, col_name in enumerate(("jigsaw_frame", "jigsaw")):
             if col_name in bpy.data.collections:
                 bpy.data.collections.remove(bpy.data.collections[col_name])
-            col = bpy.data.collections.new()
-            col.name = col_name
+            col = bpy.data.collections.new(name=col_name)
             bpy.context.scene.collection.children.link(col)
             lc = bpy.context.view_layer.layer_collection.children[col_name]
             bpy.context.view_layer.active_layer_collection = lc
