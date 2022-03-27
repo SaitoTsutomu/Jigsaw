@@ -35,15 +35,16 @@ class CJG_OT_make_puzzle(bpy.types.Operator):
         for i, col_name in enumerate(("jigsaw_frame", "jigsaw")):
             if col_name in bpy.data.collections:
                 bpy.data.collections.remove(bpy.data.collections[col_name])
-            col = bpy.data.collections.new(col_name)
+            col = bpy.data.collections.new()
+            col.name = col_name
             bpy.context.scene.collection.children.link(col)
             lc = bpy.context.view_layer.layer_collection.children[col_name]
             bpy.context.view_layer.active_layer_collection = lc
             if i == 0:
-                mat = bpy.data.materials.new(name="frame")
+                mat = bpy.data.materials.new()
+                mat.name = "frame"
                 mat.use_nodes = True
                 bsdf = mat.node_tree.nodes["Principled BSDF"]
-                bsdf.inputs["Base Color"].default_value = 1, 1, 1, 1
                 bpy.ops.curve.simple(Simple_Type="Rectangle", use_cyclic_u=True)
                 bpy.ops.transform.resize(value=(0.05 * self.num_x, 0.05 * self.num_y, 1))
                 obj = context.object
@@ -51,7 +52,8 @@ class CJG_OT_make_puzzle(bpy.types.Operator):
                 obj.data.fill_mode = "NONE"
                 obj.data.bevel_depth = 0.01
                 obj.lock_location = True, True, True
-        mat = bpy.data.materials.new(name="image")
+        mat = bpy.data.materials.new()
+        mat.name = "image"
         mat.use_nodes = True
         bsdf = mat.node_tree.nodes["Principled BSDF"]
         image = mat.node_tree.nodes.new(type="ShaderNodeTexImage")
@@ -145,6 +147,10 @@ class CJG_OT_play_puzzle(bpy.types.Operator):
                     if not ((minx < x < maxx) and (miny < y < maxy)):
                         break
                 obj.location = x, y, obj.location[2]
+            mat = bpy.data.materials.get("frame")
+            if mat:
+                bsdf = mat.node_tree.nodes["Principled BSDF"]
+                bsdf.inputs["Base Color"].default_value = 1, 1, 1, 1
             # タイマを登録
             timer = context.window_manager.event_timer_add(1, window=context.window)
             self.__class__._timer = timer
