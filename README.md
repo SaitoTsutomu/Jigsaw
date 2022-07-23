@@ -4,7 +4,7 @@ The Puzzle like a Jigsaw.
 
 ## Installation
 
-- Download https://github.com/SaitoTsutomu/Jigsaw/archive/refs/heads/main.zip
+- Download https://github.com/SaitoTsutomu/Jigsaw/archive/refs/heads/master.zip
 - Start Blender.
 - Edit menu -> Preferences
   - Select the "Add-ons" tab.
